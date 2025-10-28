@@ -1,0 +1,10 @@
+[project]
+name = "garmin-poke"
+version = "0.1.0"
+description = "Monitor Garmin Connect for new data and send updates to Poke API"
+requires-python = ">=3.13"
+dependencies = [
+    "garminconnect>=0.2.30",
+    "python-dotenv>=1.2.1",
+    "requests>=2.32.5",
+]
