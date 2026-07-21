@@ -1,6 +1,7 @@
 .venv/
 venv/
 .env
+.garmin_tokens/
 last_check.json
 __pycache__/
 *.pyc
