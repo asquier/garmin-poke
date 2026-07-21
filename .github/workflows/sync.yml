@@ -1,0 +1,34 @@
+name: Garmin Sync
+
+on:
+  schedule:
+    - cron: "*/1 * * * *"  # every minute
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up uv (Python package manager)
+        uses: yezz123/setup-uv@v1
+        with:
+          uv-version: "latest"
+
+      - name: Cache last_check.json
+        uses: actions/cache@v3
+        with:
+          path: last_check.json
+          key: ${{ runner.os }}-garmin-last-check-${{ hashFiles('last_check.json') }}
+          restore-keys: |
+            ${{ runner.os }}-garmin-last-check-
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Run Garmin monitor
+        env:
+          GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
+          GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
+          POKE_API_KEY: ${{ secrets.POKE_API_KEY }}
+        run: uv run garmin_monitor.py
