@@ -47,4 +47,9 @@ jobs:
           GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
           GARMINTOKENS: ${{ secrets.GARMINTOKENS }}
           POKE_API_KEY: ${{ secrets.POKE_API_KEY }}
-        run: uv run garmin_monitor.py
+        run: |
+          if [[ -z "${GARMINTOKENS:-}" ]]; then
+            echo "GARMINTOKENS is not configured; skipping Garmin login."
+            exit 0
+          fi
+          uv run garmin_monitor.py
