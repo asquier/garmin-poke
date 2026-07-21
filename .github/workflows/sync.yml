@@ -19,9 +19,7 @@ jobs:
           python-version: "3.13"
 
       - name: Set up uv (Python package manager)
-        uses: yezz123/setup-uv@v1
-        with:
-          uv-version: "latest"
+        uses: astral-sh/setup-uv-action@v5
 
       - name: Cache last_check.json
         uses: actions/cache@v3
