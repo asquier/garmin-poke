@@ -31,6 +31,9 @@ def main() -> None:
         raise SystemExit("Garmin email and password are required")
 
     client = Garmin(email, password, prompt_mfa=prompt_mfa)
+    # Fresh mobile logins are aggressively throttled by Garmin. Start with the
+    # web-widget strategy, which uses a separate login path and still supports MFA.
+    client.client.skip_strategies.update({"mobile+cffi", "mobile+requests"})
     client.login(tokenstore=str(TOKEN_PATH))
 
     print(f"Garmin token file created at {TOKEN_PATH}")
