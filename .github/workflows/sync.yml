@@ -28,7 +28,7 @@ jobs:
           python-version: "3.13"
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v9
+        uses: astral-sh/setup-uv@v8.3.2
 
       - name: Restore monitor state
         uses: actions/cache@v4
