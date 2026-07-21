@@ -3,6 +3,9 @@ name: Garmin Sync
 on:
   schedule:
     - cron: "*/1 * * * *"  # every minute
+  workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
   sync:
