@@ -2,32 +2,41 @@ name: Garmin Sync
 
 on:
   schedule:
-    - cron: "*/1 * * * *"  # every minute
+    - cron: "*/5 * * * *"  # GitHub Actions' minimum interval
   workflow_dispatch:
-  push:
-    branches: [ main ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: garmin-sync
+  cancel-in-progress: false
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TZ: America/Los_Angeles
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
 
-      - name: Set up uv (Python package manager)
-        uses: astral-sh/setup-uv-action@v5
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v9
 
-      - name: Cache last_check.json
-        uses: actions/cache@v3
+      - name: Restore monitor state
+        uses: actions/cache@v4
         with:
           path: last_check.json
-          key: ${{ runner.os }}-garmin-last-check-${{ hashFiles('last_check.json') }}
+          key: garmin-state-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-garmin-last-check-
+            garmin-state-
 
       - name: Install dependencies
         run: uv sync --frozen
