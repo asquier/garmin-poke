@@ -45,5 +45,6 @@ jobs:
         env:
           GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
           GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
+          GARMINTOKENS: ${{ secrets.GARMINTOKENS }}
           POKE_API_KEY: ${{ secrets.POKE_API_KEY }}
         run: uv run garmin_monitor.py
